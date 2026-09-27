@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unit 2 Review: Cell Cycle &amp; Cancer</title>
+<style>
+  :root{
+    --paper:#EEF1E6;
+    --paper-2:#E4E9DA;
+    --ink:#1B2B22;
+    --ink-soft:#4A5A4F;
+    --line:#C9D0BE;
+    --card:#FFFFFF;
+    --moss:#3E7C59;
+    --moss-dark:#2E5D43;
+    --ochre:#8B5E34;
+    --brick:#A23E32;
+    --brick-soft:#F4E2DF;
+    --moss-soft:#E1EEE5;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    min-height:100%;
+  }
+  body{
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    background-image:
+      linear-gradient(var(--paper) 0%, var(--paper) 100%),
+      repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(27,43,34,0.045) 28px);
+  }
+  .wrap{
+    max-width:640px;
+    margin:0 auto;
+    padding:28px 20px 60px;
+  }
+  h1,h2,h3{
+    font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+    font-weight:600;
+    margin:0 0 6px;
+    line-height:1.15;
+  }
+  .kicker{
+    font-size:13px;
+    letter-spacing:0.02em;
+    color:var(--ink-soft);
+    margin:0 0 4px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:22px 22px 20px;
+    box-shadow:0 1px 0 rgba(27,43,34,0.06);
+  }
+
+  /* ---------- Screens ---------- */
+  .screen{display:none;}
+  .screen.active{display:block;}
+
+  /* ---------- Start screen ---------- */
+  .lede{
+    font-size:15.5px;
+    line-height:1.55;
+    color:var(--ink-soft);
+    margin:10px 0 22px;
+  }
+  .howitworks{
+    display:flex;
+    gap:14px;
+    margin:18px 0 22px;
+    flex-wrap:wrap;
+  }
+  .howitworks .step{
+    flex:1 1 150px;
+    border-left:3px solid var(--moss);
+    padding:2px 0 2px 12px;
+    font-size:13.5px;
+    line-height:1.5;
+    color:var(--ink-soft);
+  }
+  .howitworks .step strong{
+    display:block;
+    color:var(--ink);
+    font-size:14px;
+    margin-bottom:2px;
+  }
+  label{
+    display:block;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:14px 0 5px;
+  }
+  input[type="text"]{
+    width:100%;
+    padding:10px 11px;
+    font-size:15px;
+    border:1px solid var(--line);
+    border-radius:3px;
+    background:var(--paper-2);
+    color:var(--ink);
+    font-family:inherit;
+  }
+  input[type="text"]:focus{
+    outline:2px solid var(--moss);
+    outline-offset:1px;
+  }
+  .row2{display:flex;gap:14px;}
+  .row2 > div{flex:1;}
+
+  button{
+    font-family:inherit;
+    cursor:pointer;
+  }
+  .btn-primary{
+    margin-top:22px;
+    width:100%;
+    background:var(--moss);
+    color:#fff;
+    border:none;
+    padding:14px 18px;
+    font-size:16px;
+    font-weight:600;
+    border-radius:3px;
+    transition:background .15s ease;
+  }
+  .btn-primary:hover{background:var(--moss-dark);}
+  .btn-primary:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+
+  /* ---------- Quiz header ---------- */
+  .quiz-top{
+    display:flex;
+    justify-content:flex-end;
+    margin-bottom:14px;
+  }
+  .counter{
+    text-align:right;
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+  .counter .num{
+    font-size:20px;
+    font-weight:700;
+    color:var(--ink);
+    font-family:Georgia,serif;
+  }
+  .streak{
+    display:flex;
+    gap:4px;
+    margin-top:4px;
+    justify-content:flex-end;
+  }
+  .streak .dot{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--line);
+  }
+  .streak .dot.hit{background:var(--moss);}
+
+  /* ---------- Question card ---------- */
+  .q-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:6px;
+  }
+  .q-text{
+    font-size:17px;
+    line-height:1.45;
+    margin:0;
+    flex:1;
+  }
+  .q-image{
+    display:none;
+    margin:14px 0 4px;
+    padding:10px;
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:4px;
+  }
+  .q-image.show{display:block;}
+  .q-image svg{
+    width:100%;
+    max-width:340px;
+    height:auto;
+    display:block;
+    margin:0 auto;
+  }
+  .speak-btn{
+    flex:0 0 auto;
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:50%;
+    width:34px;height:34px;
+    font-size:15px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink-soft);
+  }
+  .speak-btn:hover{background:var(--moss-soft);color:var(--moss-dark);}
+
+  .options{
+    margin-top:16px;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+  }
+  .opt{
+    text-align:left;
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:12px 14px;
+    font-size:15px;
+    color:var(--ink);
+    line-height:1.4;
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .opt:hover:not(:disabled){border-color:var(--moss);}
+  .opt:focus-visible{outline:2px solid var(--moss);outline-offset:1px;}
+  .opt:disabled{cursor:default;}
+  .opt.correct{
+    background:var(--moss-soft);
+    border-color:var(--moss);
+    color:var(--moss-dark);
+    font-weight:600;
+  }
+  .opt.wrong{
+    background:var(--brick-soft);
+    border-color:var(--brick);
+    color:var(--brick);
+  }
+  .opt.dim{opacity:0.55;}
+
+  .feedback{
+    margin-top:16px;
+    padding:13px 14px;
+    border-radius:3px;
+    font-size:14px;
+    line-height:1.55;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.right{background:var(--moss-soft);color:var(--moss-dark);border:1px solid var(--moss);}
+  .feedback.miss{background:var(--brick-soft);color:var(--brick);border:1px solid var(--brick);}
+  .feedback .verdict{font-weight:700;display:block;margin-bottom:3px;}
+
+  .quiz-actions{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    margin-top:20px;
+  }
+  .btn-next{
+    background:var(--moss);
+    color:#fff;
+    border:none;
+    padding:11px 20px;
+    font-size:14.5px;
+    font-weight:600;
+    border-radius:3px;
+    display:none;
+  }
+  .btn-next.show{display:inline-block;}
+  .btn-next:hover{background:var(--moss-dark);}
+
+  /* ---------- Summary screen ---------- */
+  .stat-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:12px;
+    margin:18px 0;
+  }
+  .stat{
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:12px 14px;
+    background:var(--paper-2);
+  }
+  .stat .n{
+    font-family:Georgia,serif;
+    font-size:26px;
+    font-weight:700;
+    display:block;
+  }
+  .stat .l{
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+  .summary-note{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    border-top:1px dashed var(--line);
+    margin-top:18px;
+    padding-top:14px;
+    line-height:1.5;
+  }
+  .summary-actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+    flex-wrap:wrap;
+  }
+
+  footer{
+    text-align:center;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    margin-top:22px;
+    opacity:0.7;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#161E19;
+      --paper-2:#1E2A22;
+      --ink:#E7EEE7;
+      --ink-soft:#9FB0A2;
+      --line:#334036;
+      --card:#1B2620;
+      --moss:#5FA97C;
+      --moss-dark:#8FCBA8;
+      --moss-soft:#213629;
+      --brick-soft:#3A2320;
+      --brick:#D98277;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- START SCREEN -->
+  <section id="screen-start" class="screen active">
+    <p class="kicker">Unit 2 &middot; Cell Cycle &amp; Cancer</p>
+    <h1>Unit 2 Review</h1>
+    <p class="lede">Answer 40 questions on the cell cycle and cancer. Every answer comes with a short explanation.</p>
+
+    <div class="howitworks">
+      <div class="step"><strong>Answer</strong>Pick the best answer for each question.</div>
+      <div class="step"><strong>Review</strong>Every answer comes with a short explanation.</div>
+    </div>
+
+    <div class="card">
+      <div class="row2">
+        <div>
+          <label for="stu-name">Name (optional)</label>
+          <input type="text" id="stu-name" placeholder="e.g. Jordan P.">
+        </div>
+        <div>
+          <label for="stu-hour">Hour (optional)</label>
+          <input type="text" id="stu-hour" placeholder="e.g. 3rd">
+        </div>
+      </div>
+      <button class="btn-primary" id="btn-start">Begin review</button>
+    </div>
+  </section>
+
+  <!-- QUIZ SCREEN -->
+  <section id="screen-quiz" class="screen">
+    <div class="quiz-top">
+      <div class="counter">
+        <span class="num" id="q-count">1</span> of <span id="q-total">40</span>
+        <div class="streak" id="streak-dots">
+          <span class="dot"></span><span class="dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="q-head">
+        <p class="q-text" id="q-text"></p>
+        <button class="speak-btn" id="btn-speak" title="Read question aloud" aria-label="Read question aloud">&#128266;</button>
+      </div>
+      <div class="q-image" id="q-image"></div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback">
+        <span class="verdict" id="fb-verdict"></span>
+        <span id="fb-text"></span>
+      </div>
+      <div class="quiz-actions">
+        <button class="btn-next" id="btn-next">Next question &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUMMARY SCREEN -->
+  <section id="screen-summary" class="screen">
+    <p class="kicker">Session complete</p>
+    <h1 id="summary-title">Nice work</h1>
+    <div class="card">
+      <p id="summary-who" style="color:var(--ink-soft);font-size:14px;margin-top:0;"></p>
+
+      <div class="stat-grid">
+        <div class="stat"><span class="n" id="stat-asked">0</span><span class="l">Questions answered</span></div>
+        <div class="stat"><span class="n" id="stat-pct">0%</span><span class="l">Correct overall</span></div>
+        <div class="stat"><span class="n" id="stat-best-streak">0</span><span class="l">Best streak</span></div>
+      </div>
+
+      <p class="summary-note" id="summary-message"></p>
+
+      <div class="summary-actions">
+        <button class="btn-primary" style="margin-top:0;flex:1;" id="btn-restart">Review again</button>
+      </div>
+    </div>
+    <footer>Show this screen to your teacher, or take a screenshot.</footer>
+  </section>
+
+</div>
+
+<script>
+(function(){
+
+  // ---------------------------------------------------------------
+  // QUESTION BANK
+  // tier: 1 = Foundational (vocab/definitions)
+  //       2 = Building (phase identification, applied recall)
+  //       3 = Advanced (reasoning, sequencing, synthesis)
+  // ---------------------------------------------------------------
+  const BANK = [
+    // ---------------- TIER 1: FOUNDATIONAL ----------------
+    {tier:1, q:"What are the two major parts of the cell cycle?",
+     opts:["Interphase and Mitosis","Prophase and Telophase","Growth and Metastasis","Chromatin and Chromosome"],
+     correct:0, exp:"The cell cycle has two main parts: Interphase (grow &amp; prepare) and Mitosis (divide)."},
+    {tier:1, q:"Which phase of the cell cycle is the longest?",
+     opts:["Prophase","Interphase","Metaphase","Anaphase"],
+     correct:1, exp:"A cell spends roughly 90% of its life in Interphase &mdash; growing, carrying out life functions, and preparing to divide."},
+    {tier:1, q:"What is chromatin?",
+     opts:["Tightly coiled, visible DNA","Loose, uncoiled, thread-like DNA","The structure that anchors the spindle","A type of cancer cell"],
+     correct:1, exp:"Chromatin is DNA in its loose, uncoiled form &mdash; the state DNA is in during Interphase."},
+    {tier:1, q:"How many phases make up mitosis?",
+     opts:["2","3","4","6"],
+     correct:2, exp:"Mitosis has four phases: Prophase, Metaphase, Anaphase, Telophase (PMAT)."},
+    {tier:1, q:"What structure connects two sister chromatids to form one chromosome?",
+     opts:["Spindle","Centriole","Centromere","Nucleolus"],
+     correct:2, exp:"The centromere is the pinch-point that holds sister chromatids together."},
+    {tier:1, q:"How many daughter cells result from mitosis and cytokinesis?",
+     opts:["1","2","4","It varies"],
+     correct:1, exp:"One parent cell divides into 2 identical daughter cells."},
+    {tier:1, q:"What structure anchors the spindle fibers?",
+     opts:["Centromere","Centriole","Nucleolus","Chromatin"],
+     correct:1, exp:"Centrioles anchor the spindle fibers that move chromosomes during division."},
+    {tier:1, q:"In the simplest terms, what is cancer?",
+     opts:["A virus that attacks healthy cells","Uncontrolled cell division","A benign growth that never spreads","The final stage of interphase"],
+     correct:1, exp:"Cancer is uncontrolled mitosis, caused by a mutation that makes a cell lose control of its cell cycle."},
+    {tier:1, q:"What is an oncologist?",
+     opts:["A doctor who specializes in diagnosing and treating cancer","A scientist who only studies cell division","A nurse who only gives chemotherapy","A researcher who only studies chromatin"],
+     correct:0, exp:"An oncologist is the physician who diagnoses and treats cancer patients."},
+    {tier:1, q:"What is remission?",
+     opts:["When cancer spreads to other organs","When cancer returns after treatment","When cancer recedes and is no longer detectable","The first stage of tumor growth"],
+     correct:2, exp:"Remission means there's no longer any detectable trace of the cancer, usually after treatment."},
+    {tier:1, q:"What is another name for cell division?",
+     opts:["Cytokinesis","Mitosis","Interphase","Metastasis"],
+     correct:1, exp:"\"Mitosis\" and \"cell division\" refer to the same process."},
+    {tier:1, q:"What is another name for the splitting of the cytoplasm into two cells?",
+     opts:["Mitosis","Cytokinesis","Metaphase","Interphase"],
+     correct:1, exp:"Cytokinesis is specifically the division of the cytoplasm, separate from mitosis (division of the nucleus)."},
+    {tier:1, q:"Along with the spindle, what other structure breaks down during Telophase?",
+     opts:["The centrioles","The cell membrane","The ribosomes","The mitochondria"],
+     correct:0, exp:"Centrioles break down during Telophase, just like the spindle fibers they helped anchor."},
+    {tier:1, q:"What is a chromosome made up of?",
+     opts:["Two sister chromatids joined at a centromere","A single strand of uncoiled chromatin","A spindle fiber and a centriole","Two nuclear envelopes"],
+     correct:0, exp:"A chromosome is made of two sister chromatids held together at a centromere."},
+    {tier:1, q:"What are chromatids?",
+     opts:["The duplicate halves of a chromosome","The fibers that pull chromosomes apart","The membrane around the nucleus","A type of cancer cell"],
+     correct:0, exp:"Chromatids are the two identical halves of a duplicated chromosome, joined at the centromere."},
+    {tier:1, q:"In simple terms, what job do spindle fibers do?",
+     opts:["They help move and position chromosomes during cell division","They store the cell's DNA","They produce energy for the cell","They control when the cell eats"],
+     correct:0, exp:"Spindle fibers position chromosomes at Metaphase and pull them apart at Anaphase."},
+    {tier:1, q:"What does it mean if a tumor is described as \u2018benign\u2019?",
+     opts:["It's cancerous and spreading","It's non-cancerous and doesn't spread","It's a virus","It's a type of enzyme"],
+     correct:1, exp:"A benign tumor is non-cancerous and stays contained &mdash; it doesn't spread to other parts of the body."},
+    {tier:1, q:"What does it mean if a tumor is described as \u2018malignant\u2019?",
+     opts:["It's non-cancerous","It's cancerous and can spread to other parts of the body","It's the same as a benign tumor","It's a treatment for cancer"],
+     correct:1, exp:"A malignant tumor is cancerous and can metastasize, or spread, if not treated."},
+    {tier:1, q:"Which of these is a known environmental factor that can lead to cancer?",
+     opts:["UV radiation from the sun","Drinking plenty of water","Regular exercise","Eating fruits and vegetables"],
+     correct:0, exp:"UV radiation, along with pollution, tobacco, and certain viruses, is a known factor that can lead to cancer."},
+    {tier:1, q:"Which of these is NOT considered a way to help lower cancer risk?",
+     opts:["Wearing sunscreen","Eating a balanced diet","Smoking tobacco regularly","Getting regular exercise"],
+     correct:2, exp:"Smoking is a known cancer risk factor, not a way to reduce it &mdash; sunscreen, a balanced diet, and exercise all help lower risk."},
+    {tier:1, q:"In simple terms, what is a tumor?",
+     opts:["A mass of cells formed by uncontrolled cell division","A type of healthy organelle","A structure that anchors the spindle","The membrane around the nucleus"],
+     correct:0, exp:"A tumor is a growth of cells caused by uncontrolled cell division."},
+    {tier:1, q:"Which is the simplest (least complex) level of biological organization?",
+     opts:["Organelle","Organ","Tissue","Organism"],
+     correct:0, exp:"Organelle is the simplest level listed &mdash; organelle, cell, tissue, organ, organ system, organism, from least to most complex."},
+    {tier:1, q:"Which is the most complex level of biological organization?",
+     opts:["Cell","Tissue","Organism","Organelle"],
+     correct:2, exp:"Organism is the most complex level &mdash; it's made up of organ systems, which are made up of organs, tissues, and cells."},
+    {tier:1, q:"Which of these is an actual treatment option for cancer?",
+     opts:["Chemotherapy","Photosynthesis","Cellular respiration","Fermentation"],
+     correct:0, exp:"Chemotherapy is a real cancer treatment; the other terms describe unrelated biological processes."},
+    {tier:1, q:"Which cancer treatment uses X-rays to target and kill cancerous cells?",
+     opts:["Chemotherapy","Radiation therapy","Nuclear medicine","Surgery only"],
+     correct:1, exp:"Radiation therapy uses focused radiation, like x-rays, to kill cancerous cells."},
+    {tier:1, q:"Which cancer treatment involves injecting a patient with radioactive elements to target tumors?",
+     opts:["Chemotherapy","Radiation therapy","Nuclear medicine","Antibiotics"],
+     correct:2, exp:"Nuclear medicine uses radioactive elements that specifically target tumors and cancerous cells."},
+    {tier:1, q:"What happens if a malignant tumor is left untreated, according to how cancer typically develops?",
+     opts:["It can metastasize and spread to other parts of the body","It automatically becomes benign","It disappears on its own","It turns into a virus"],
+     correct:0, exp:"Left untreated, a malignant tumor can metastasize &mdash; spreading cancer to other parts of the body."},
+    {tier:1, q:"What must happen to a cell's DNA before mitosis can begin?",
+     opts:["It must be copied/replicated","It must be destroyed","It must leave the cell","It must turn into RNA"],
+     correct:0, exp:"DNA must be replicated during Interphase so each new daughter cell ends up with a complete copy."},
+    {tier:1, q:"If a cell has 4 chromosomes total, how many chromosomes are present during Prophase, before they separate?",
+     opts:["4","2","8","1"],
+     correct:0, exp:"The chromosome count doesn't change until Anaphase separates sister chromatids &mdash; so Prophase still shows all 4 chromosomes."},
+    {tier:1, q:"What are the two daughter cells produced by mitosis like, compared to each other and the parent cell?",
+     opts:["Genetically identical","Genetically different","Larger than the parent cell","Missing half their DNA"],
+     correct:0, exp:"Mitosis produces two daughter cells that are genetically identical to the parent cell and to each other."},
+    {tier:1, q:"During Interphase, what is the cell doing besides growing?",
+     opts:["Carrying out protein synthesis and building structures like centrioles","Splitting into two identical cells","Lining up its chromosomes at the equator","Breaking down its spindle fibers"],
+     correct:0, exp:"During Interphase the cell also carries out protein synthesis and builds structures like centrioles that it will need later."},
+    {tier:1, q:"What happens to the nucleolus during Prophase?",
+     opts:["It disappears, along with the nuclear envelope","It doubles in size","It becomes the centromere","It moves outside the cell"],
+     correct:0, exp:"During Prophase, both the nuclear envelope and the nucleolus disappear as the cell prepares to divide."},
+    {tier:1, q:"What happens to the nucleolus by the end of Telophase?",
+     opts:["It disappears permanently","It reappears, along with the nuclear envelope","It turns into a spindle fiber","It becomes part of the centriole"],
+     correct:1, exp:"By Telophase, the nucleolus reappears along with the nuclear envelope as the cell finishes dividing."},
+    {tier:1, q:"What do spindle fibers do once they attach to chromosomes during Metaphase?",
+     opts:["They move the chromosomes to the middle (equator) of the cell","They cause the chromosomes to disappear","They copy the chromosomes","They turn chromosomes into chromatin"],
+     correct:0, exp:"Once attached, spindle fibers move and align chromosomes at the cell's equator during Metaphase."},
+    {tier:1, q:"What is the correct term for the middle of the cell where chromosomes line up during Metaphase?",
+     opts:["The equator","The pole","The nucleolus","The centromere"],
+     correct:0, exp:"Chromosomes line up along the cell's equator (its exact middle) during Metaphase."},
+    {tier:1, q:"Roughly what percentage of a cell's life is typically spent in Interphase?",
+     opts:["About 90%","About 10%","About 50%","About 25%"],
+     correct:0, exp:"A cell spends roughly 90% of its life in Interphase, which is why it's considered the longest phase."},
+    {tier:1, q:"What happens to sister chromatids once the centromere splits during Anaphase?",
+     opts:["They are pulled to opposite ends of the cell","They fuse into a single chromosome","They dissolve into the cytoplasm","They form a new spindle"],
+     correct:0, exp:"Once the centromere splits, spindle fibers pull each sister chromatid toward opposite poles of the cell."},
+    {tier:1, q:"What is the general term for the two identical cells that result at the very end of the cell cycle?",
+     opts:["Daughter cells","Parent cells","Stem cells","Gamete cells"],
+     correct:0, exp:"The two identical cells produced by mitosis and cytokinesis are called daughter cells."},
+    {tier:1, q:"What is the general term for the molecules that act like checkpoints, controlling whether the cell cycle starts and stops correctly?",
+     opts:["Enzymes","Chromatids","Nucleoli","Centrioles"],
+     correct:0, exp:"Enzymes act as the cell cycle's control system, making sure it starts and stops at the right times."},
+    {tier:1, q:"What is the term for the repeating process of a cell growing, copying its DNA, and dividing?",
+     opts:["The cell cycle","Metastasis","Remission","Chemotherapy"],
+     correct:0, exp:"The cell cycle is the full repeating process of growth, DNA replication, and division that a cell goes through."},
+
+    // ---------------- TIER 2: BUILDING ----------------
+    {tier:2, q:"During which phase does the nuclear envelope (membrane) disappear?",
+     opts:["Interphase","Prophase","Metaphase","Telophase"],
+     correct:1, exp:"In Prophase, the nuclear envelope breaks down as the cell prepares to divide."},
+    {tier:2, q:"During which phase do chromosomes line up at the equator (middle) of the cell?",
+     opts:["Prophase","Metaphase","Anaphase","Telophase"],
+     correct:1, exp:"Metaphase &mdash; the spindle lines chromosomes up at the middle so DNA splits evenly."},
+    {tier:2, q:"During which phase do sister chromatids separate and move toward opposite ends of the cell?",
+     opts:["Prophase","Metaphase","Anaphase","Telophase"],
+     correct:2, exp:"Anaphase &mdash; the centromere splits and the spindle pulls chromatids apart."},
+    {tier:2, q:"During which phase does the nuclear envelope reappear?",
+     opts:["Prophase","Metaphase","Anaphase","Telophase"],
+     correct:3, exp:"Telophase is essentially the reverse of Prophase &mdash; the nuclear envelope and nucleolus reappear."},
+    {tier:2, q:"Cytokinesis (division of the cytoplasm) begins during which phase?",
+     opts:["Prophase","Metaphase","Anaphase","Telophase"],
+     correct:3, exp:"Cytokinesis begins in Telophase, splitting the cell into two daughter cells."},
+    {tier:2, q:"During which phase is a cell's DNA copied/replicated?",
+     opts:["Interphase","Prophase","Metaphase","Telophase"],
+     correct:0, exp:"DNA replication happens during Interphase, before mitosis begins."},
+    {tier:2, q:"During Metaphase, what is the cell's DNA called?",
+     opts:["Chromatin","Chromosomes","Genes","Nucleotides"],
+     correct:1, exp:"By Metaphase, chromatin has coiled up into visible chromosomes."},
+    {tier:2, q:"During Anaphase, as it's pulled apart, what is the DNA called?",
+     opts:["Chromatin","Chromosomes","Sister chromatids","Nucleotides"],
+     correct:2, exp:"Anaphase is when sister chromatids (the separated halves) are pulled to opposite poles."},
+    {tier:2, q:"By the end of Telophase, what has the DNA uncoiled back into?",
+     opts:["Chromatin","Chromosomes","Chromatids","RNA"],
+     correct:0, exp:"Chromatids uncoil back into loose chromatin as the cell finishes dividing."},
+    {tier:2, q:"What are the molecules that help regulate (control) the cell cycle called?",
+     opts:["Hormones","Enzymes","Antibodies","Ribosomes"],
+     correct:1, exp:"Enzymes control the cell cycle, making sure it moves through phases correctly and starts/stops when it should."},
+    {tier:2, q:"Which of these is NOT one of the four phases of mitosis?",
+     opts:["Prophase","Interphase","Metaphase","Telophase"],
+     correct:1, exp:"Interphase happens before mitosis &mdash; it isn't one of the PMAT phases."},
+    {tier:2, q:"What is the difference between a benign tumor and a malignant tumor?",
+     opts:["Benign spreads quickly, malignant does not","Benign is non-cancerous and doesn't spread; malignant is cancerous and can spread","They're two names for the same thing","Malignant tumors always shrink on their own"],
+     correct:1, exp:"Benign tumors are encapsulated and don't spread. Malignant tumors are cancerous and can metastasize."},
+    {tier:2, q:"What is metastasis?",
+     opts:["The first mutation that starts cancer","The spread of cancer to other parts of the body","The process of chromatids separating","A treatment for cancer"],
+     correct:1, exp:"Metastasis is when cancer spreads from its original site to other parts of the body."},
+    {tier:2, q:"Put these in order from least to most complex.",
+     opts:["Organelle \u2192 Cell \u2192 Tissue \u2192 Organ \u2192 Organ System \u2192 Organism",
+           "Cell \u2192 Organelle \u2192 Tissue \u2192 Organism \u2192 Organ \u2192 Organ System",
+           "Organism \u2192 Organ System \u2192 Organ \u2192 Tissue \u2192 Cell \u2192 Organelle",
+           "Organelle \u2192 Tissue \u2192 Cell \u2192 Organ \u2192 Organism \u2192 Organ System"],
+     correct:0, exp:"Levels of organization run: organelle \u2192 cell \u2192 tissue \u2192 organ \u2192 organ system \u2192 organism."},
+    {tier:2, q:"Which phase involves BOTH the disappearance of the nuclear envelope AND the migration of centrioles to opposite poles?",
+     opts:["Prophase","Metaphase","Anaphase","Telophase"],
+     correct:0, exp:"Both of these events happen together during Prophase, as the cell prepares to divide."},
+    {tier:2, q:"During which phase are chromosomes attached to spindle fibers from BOTH poles at once?",
+     opts:["Metaphase","Prophase","Anaphase","Interphase"],
+     correct:0, exp:"At Metaphase, spindle fibers from both poles attach to each chromosome's centromere before pulling begins."},
+    {tier:2, q:"Which phase involves the reappearance of BOTH the nuclear envelope and the nucleolus?",
+     opts:["Telophase","Prophase","Metaphase","Anaphase"],
+     correct:0, exp:"Both the nuclear envelope and nucleolus reappear together during Telophase."},
+    {tier:2, q:"If chromatin has just finished coiling into visible chromosomes, which phase is the cell most likely entering?",
+     opts:["Prophase","Interphase","Anaphase","Telophase"],
+     correct:0, exp:"Chromatin coiling into visible chromosomes is a defining event of Prophase."},
+    {tier:2, q:"If a cell's chromatids have just uncoiled back into chromatin, which phase is it most likely in?",
+     opts:["Telophase","Prophase","Metaphase","Anaphase"],
+     correct:0, exp:"Chromatids uncoiling back into chromatin happens during Telophase, as the cell cycle returns to Interphase."},
+    {tier:2, q:"A cell's centromere has just split, and its chromatids are being pulled to opposite poles. Which phase is this?",
+     opts:["Anaphase","Metaphase","Prophase","Telophase"],
+     correct:0, exp:"The centromere splitting and chromatids separating is the defining event of Anaphase."},
+    {tier:2, q:"Which phase comes immediately before Metaphase in the correct order of mitosis?",
+     opts:["Prophase","Anaphase","Telophase","Interphase"],
+     correct:0, exp:"The order of mitosis is Prophase, Metaphase, Anaphase, Telophase (PMAT) &mdash; so Prophase comes right before Metaphase."},
+    {tier:2, q:"Which phase comes immediately after Anaphase in the correct order of mitosis?",
+     opts:["Telophase","Metaphase","Prophase","Interphase"],
+     correct:0, exp:"The order of mitosis is Prophase, Metaphase, Anaphase, Telophase \u2014 so Telophase follows Anaphase."},
+    {tier:2, q:"Which best describes what 'metastasis' means for a patient's prognosis?",
+     opts:["It generally signals a more serious stage, since the cancer is spreading","It means the cancer has already been cured","It only applies to benign tumors","It means the tumor has stopped growing entirely"],
+     correct:0, exp:"Metastasis means the cancer is spreading to other parts of the body, generally a more serious development."},
+    {tier:2, q:"Why are oncologists specifically needed, rather than a general doctor, for cancer care?",
+     opts:["They specialize in diagnosing and treating the specific complexities of cancer","They are the only doctors allowed to prescribe any medication","They only handle benign tumors","They only perform surgery, never other treatments"],
+     correct:0, exp:"Oncologists specialize in the diagnosis and treatment of cancer specifically, including chemotherapy, radiation, and other options."},
+    {tier:2, q:"Which pair correctly matches structures that BOTH break down during Telophase?",
+     opts:["The spindle and the centrioles","The chromosomes and the spindle fibers","The nuclear envelope and the chromatin","The centromeres and the nucleoli"],
+     correct:0, exp:"Both the spindle and the centrioles break down during Telophase as the cell finishes dividing."},
+    {tier:2, q:"Which level of organization is a step up in complexity directly above the cell?",
+     opts:["Tissue","Organelle","Organ","Organ system"],
+     correct:0, exp:"Directly above the cell in complexity is tissue, followed by organ, organ system, and finally organism."},
+    {tier:2, q:"Which level of organization is a step down in complexity directly below tissue?",
+     opts:["Cell","Organ","Organism","Organ system"],
+     correct:0, exp:"Directly below tissue in complexity is the cell, which is made up of organelles."},
+    {tier:2, q:"A tumor is found to be encapsulated and is not spreading to other tissues. Based on this, how would it most likely be classified?",
+     opts:["Benign","Malignant","Metastatic","Cancerous"],
+     correct:0, exp:"A tumor that stays encapsulated and doesn't spread is classified as benign, not malignant."},
+
+    // ---------------- TIER 3: ADVANCED ----------------
+    {tier:3, q:"Why is it important for a cell's DNA to be duplicated before cell division?",
+     opts:["So the parent cell can shrink in size","So both daughter cells end up with the same amount of DNA","So the spindle fibers have more to hold onto","So mitosis takes longer to complete"],
+     correct:1, exp:"DNA must be copied first so each new daughter cell gets a complete, identical set."},
+    {tier:3, q:"What is the correct order of events in how cancer develops, from earliest to latest?",
+     opts:["Metastasis \u2192 mutation \u2192 tumor \u2192 faulty enzyme",
+           "A carcinogen damages DNA \u2192 defective gene \u2192 faulty enzyme \u2192 uncontrolled cell cycle \u2192 tumor \u2192 metastasis",
+           "Tumor \u2192 mutation \u2192 metastasis \u2192 faulty enzyme",
+           "Faulty enzyme \u2192 tumor \u2192 mutation \u2192 metastasis"],
+     correct:1, exp:"Damage to DNA leads to a defective gene, which codes for a faulty enzyme, which can't control the cell cycle &mdash; leading to a tumor and, potentially, metastasis."},
+    {tier:3, q:"A carcinogen damages a gene on a cell's DNA. Based on how the cell cycle works, what's the most likely downstream effect?",
+     opts:["The cell will immediately die","The gene may code for a faulty enzyme, and since enzymes control the cell cycle, it can become uncontrolled","The cell will automatically repair itself with no consequences","The cell will simply skip mitosis entirely"],
+     correct:1, exp:"Genes code for enzymes, and enzymes are what keep the cell cycle in check &mdash; damage one and the whole system can lose control."},
+    {tier:3, q:"Which of these is a way humans can help lower their risk of developing cancer?",
+     opts:["Avoiding sunscreen","Eating a diet consistently high in fat","Wearing sunscreen and eating a healthy diet","Increasing UV exposure"],
+     correct:2, exp:"Sunscreen and a healthy, lower-fat diet are both practices that help reduce cancer risk."},
+    {tier:3, q:"How does chemotherapy work as a cancer treatment?",
+     opts:["It specifically targets and kills cells that are actively dividing","It only removes benign tumors","It replaces damaged DNA with healthy DNA","It prevents interphase from occurring in any cell"],
+     correct:0, exp:"Chemotherapy targets cells going through mitosis &mdash; which is why fast-dividing cancer cells are especially affected."},
+    {tier:3, q:"What is the relationship between chromatin, chromosomes, and sister chromatids?",
+     opts:["They're unrelated structures found in different organisms","Chromatin coils up to form chromosomes, and each chromosome is made of two sister chromatids joined at a centromere","Sister chromatids uncoil to form chromatin during Prophase","Chromosomes are found only in cancer cells"],
+     correct:1, exp:"Chromatin (loose DNA) coils into chromosomes; each chromosome = two sister chromatids joined at a centromere."},
+    {tier:3, q:"What is the overall purpose of mitosis in the human body?",
+     opts:["Only to create entirely new organisms","To replace old/dead cells, allow growth, and produce genetically identical daughter cells","To create genetically different daughter cells","To slow down cellular activity"],
+     correct:1, exp:"Mitosis replaces worn-out cells, allows growth, and produces daughter cells identical to the parent."},
+    {tier:3, q:"What role do enzymes play in a healthy, non-cancerous cell cycle?",
+     opts:["They have no effect on the cell cycle","They move the cell cycle through its phases correctly and control when it starts and stops","They cause mutations in DNA on purpose","They're only active during cytokinesis"],
+     correct:1, exp:"Enzymes are the cell cycle's control system &mdash; they keep phases running correctly and on schedule."},
+    {tier:3, q:"What is the spindle, and what does it do?",
+     opts:["A membrane that surrounds the nucleus","A set of fibers that positions chromosomes at Metaphase and pulls them apart during Anaphase","An organelle found only in cancer cells","The structure that copies DNA during Interphase"],
+     correct:1, exp:"The spindle forms in Prophase, lines chromosomes up in Metaphase, and pulls chromatids apart in Anaphase."},
+    {tier:3, q:"If a cell's centrioles were damaged and couldn't function, what would you predict happens to the spindle fibers during mitosis?",
+     opts:["They would form normally without any issue","They likely wouldn't form properly, since centrioles anchor the spindle","They would only form during Interphase","They would replace the nuclear envelope"],
+     correct:1, exp:"Since centrioles anchor the spindle fibers, damage to the centrioles would likely prevent the spindle from forming and positioning correctly."},
+    {tier:3, q:"A cell has chromosomes lined up at its equator, but no spindle fibers are attached. What would you predict happens next?",
+     opts:["The cell would proceed normally into Anaphase","The chromosomes likely couldn't be pulled apart correctly, since spindle fibers do that job","The cell would skip Metaphase entirely","The nuclear envelope would immediately reform"],
+     correct:1, exp:"Spindle fibers are what pull sister chromatids apart during Anaphase &mdash; without them attached, the chromosomes can't separate correctly."},
+    {tier:3, q:"Why is Interphase considered the 'longest' phase of the cell cycle, even though no visible division is happening?",
+     opts:["Because the cell is doing the bulk of its living: growing, functioning, and preparing to divide","Because chromosomes are moving very slowly during this phase","Because Interphase is actually part of Mitosis","Because the spindle takes a long time to form during Interphase"],
+     correct:0, exp:"Interphase includes growth, normal cell functions, and DNA replication/preparation &mdash; that's why it takes up about 90% of a cell's life cycle."},
+    {tier:3, q:"Which chain of cause and effect correctly shows how a gene mutation can start the process that leads to cancer?",
+     opts:["Mutated gene \u2192 faulty enzyme \u2192 uncontrolled cell cycle \u2192 tumor","Tumor \u2192 faulty enzyme \u2192 mutated gene \u2192 uncontrolled cell cycle","Uncontrolled cell cycle \u2192 mutated gene \u2192 tumor \u2192 faulty enzyme","Faulty enzyme \u2192 tumor \u2192 mutated gene \u2192 uncontrolled cell cycle"],
+     correct:0, exp:"A mutated gene can code for a faulty enzyme; since enzymes control the cell cycle, this can lead to uncontrolled division and, eventually, a tumor."},
+    {tier:3, q:"Why can chemotherapy cause side effects like hair loss, even though it's meant to target cancer cells?",
+     opts:["Because chemotherapy targets any cell that is actively dividing, including healthy hair follicle cells","Because chemotherapy only affects hair cells","Because chemotherapy causes new mutations in healthy cells","Because chemotherapy replaces DNA in all cells"],
+     correct:0, exp:"Chemotherapy targets actively dividing cells in general &mdash; hair follicle cells divide frequently too, which is why hair loss is a common side effect."},
+    {tier:3, q:"A benign tumor is generally considered less dangerous than a malignant tumor. Why is that?",
+     opts:["Because a benign tumor is encapsulated and doesn't spread to other parts of the body","Because a benign tumor is actually healthy tissue","Because a benign tumor always shrinks over time","Because a benign tumor doesn't involve any cell division at all"],
+     correct:0, exp:"A benign tumor stays contained (encapsulated) and doesn't metastasize, which is why it's considered less dangerous than a malignant tumor."},
+    {tier:3, q:"If the enzymes that regulate a cell's cycle stopped working correctly, what would you expect to happen to that cell's rate of division?",
+     opts:["The cell would likely divide uncontrollably, since enzymes normally start and stop the cycle correctly","The cell would immediately stop dividing forever","The cell would divide at exactly the same rate as before","The cell would turn into a different type of cell"],
+     correct:0, exp:"Enzymes keep the cell cycle in check; if they stop working properly, the cycle can run out of control &mdash; which is essentially what happens in cancer."},
+    {tier:3, q:"Why does a cell duplicate its chromosomes into sister chromatid pairs before it divides, rather than dividing with just one copy?",
+     opts:["So that after they're pulled apart, each daughter cell still ends up with a complete set of DNA","So the cell can be twice as large before dividing","So the spindle has more chromosomes to practice on","So the nuclear envelope has time to disappear"],
+     correct:0, exp:"Duplicating chromosomes into sister chromatid pairs ensures that once they're separated, each daughter cell still gets a full, complete set of DNA."},
+    {tier:3, q:"What would likely happen to a cell if cytokinesis failed to occur after mitosis was otherwise complete?",
+     opts:["The cell would end up with two nuclei instead of splitting into two separate cells","The cell would have no DNA at all","The cell would immediately become cancerous","The cell would skip Interphase entirely"],
+     correct:0, exp:"If cytokinesis (splitting of the cytoplasm) fails after the nucleus has already divided, the result is one cell with two nuclei instead of two separate daughter cells."},
+    {tier:3, q:"Radiation therapy and nuclear medicine are both used to treat cancer. What do these two treatments have in common in how they work?",
+     opts:["Both use radiation or radioactive material to damage or kill cancerous cells","Both work by replacing the patient's damaged DNA","Both are exactly the same treatment with different names","Both work only on benign tumors"],
+     correct:0, exp:"Radiation therapy uses external radiation (like x-rays), while nuclear medicine uses radioactive elements internally &mdash; but both work by damaging or killing cancer cells with radiation."},
+    {tier:3, q:"Why is it important that mitosis produces genetically identical daughter cells rather than different ones?",
+     opts:["So the body's cells continue to function and be recognized correctly as part of the organism","So the daughter cells can specialize into completely different organisms","So the immune system can identify and attack them as foreign invaders","So mutations are guaranteed to occur in every division"],
+     correct:0, exp:"Producing genetically identical daughter cells helps the body's tissues keep functioning correctly and keeps the immune system from mistakenly attacking them as foreign."},
+    {tier:3, q:"A student claims cancer can only be caused by inherited genetics, never by anything in the environment. Is that accurate?",
+     opts:["No \u2014 environmental factors like UV radiation, pollution, and tobacco can also cause the DNA damage that leads to cancer","Yes \u2014 cancer is always inherited genetically and cannot be caused by the environment","No \u2014 cancer is caused only by viruses, never genetics or environment","Yes \u2014 but only in animals, not humans"],
+     correct:0, exp:"Cancer can result from a variety of causes, including environmental factors like UV radiation, pollution, tobacco, and viruses \u2014 not genetics alone."},
+    {tier:3, q:"Why might catching cancer in an early stage, before metastasis, generally lead to better treatment outcomes?",
+     opts:["Because the cancer is still contained in one area, making it easier to remove or target with treatment","Because early-stage cancer is not actually cancer","Because early-stage tumors are always benign","Because metastasis makes cancer disappear on its own"],
+     correct:0, exp:"Before metastasis, cancer is generally contained to one area, which makes it easier to surgically remove or directly target with treatment."},
+    {tier:3, q:"If a cell skipped Metaphase and went straight from Prophase to Anaphase, what problem would you predict?",
+     opts:["Chromosomes might not divide evenly between the two daughter cells, since they were never lined up and properly attached first","Nothing would go wrong, since Metaphase isn't necessary","The cell would only produce chromatin, not chromosomes","The spindle fibers would never form"],
+     correct:0, exp:"Metaphase ensures chromosomes are properly lined up and attached to spindle fibers from both poles before separation \u2014 skipping it risks uneven distribution of DNA."},
+    {tier:3, q:"Two daughter cells end up with different amounts of DNA after mitosis. At which phase did the error most likely occur?",
+     opts:["Anaphase, where chromatids are supposed to be pulled apart evenly","Interphase, where the cell was just growing","Telophase, where new nuclear envelopes form","Cytokinesis, after the DNA was already correctly divided"],
+     correct:0, exp:"An uneven split of DNA points to a problem during Anaphase, when sister chromatids are supposed to separate evenly to each pole."},
+    {tier:3, q:"If a cell divided before its DNA had finished replicating, what problem would this most likely cause?",
+     opts:["The daughter cells would not receive complete, equal sets of DNA","The cell would automatically enter remission","The spindle would form twice as fast","The centrioles would immediately migrate to the equator"],
+     correct:0, exp:"DNA must be fully replicated before division so each daughter cell gets a complete set \u2014 dividing early would leave the daughter cells with incomplete DNA."},
+    {tier:3, q:"Why is it accurate to say cancer is fundamentally a problem with the cell cycle, rather than a totally separate disease process?",
+     opts:["Because cancer results from the cell cycle losing its normal control, leading to uncontrolled division of the same basic process every cell normally goes through","Because cancer cells stop going through the cell cycle entirely","Because cancer only affects cells that are not currently in Interphase","Because the cell cycle and cancer are unrelated to each other"],
+     correct:0, exp:"Cancer is fundamentally the cell cycle running uncontrolled due to damaged enzymes/genes \u2014 it's the same basic process, just no longer regulated correctly."},
+    {tier:3, q:"Why would a doctor generally consider a malignant tumor a more urgent concern than a benign one, even if both are currently the same size?",
+     opts:["Because a malignant tumor can metastasize and spread, while a benign tumor stays contained","Because malignant tumors are always painful and benign ones never are","Because benign tumors always grow faster than malignant ones","Because malignant tumors cannot be treated at all"],
+     correct:0, exp:"Even at the same size, a malignant tumor's ability to metastasize makes it a more urgent concern than an encapsulated, non-spreading benign tumor."},
+    {tier:3, q:"Radiation therapy targets a tumor directly. Based on how cancer treatments work, why might it be paired with chemotherapy rather than used alone?",
+     opts:["Because chemotherapy can target dividing cancer cells that may have already spread beyond the reach of localized radiation","Because chemotherapy and radiation always cancel each other out","Because radiation only works on benign tumors","Because chemotherapy replaces the need for a diagnosis"],
+     correct:0, exp:"Radiation is generally localized, while chemotherapy travels through the body and can target dividing cancer cells that have already spread \u2014 making the combination more thorough."},
+    {tier:3, q:"A cell has just finished Anaphase. Predict how the number of chromosomes at each pole compares to the number in the original cell before mitosis began.",
+     opts:["Each pole will end up with the same number of chromosomes as the original cell had","Each pole will end up with half the number of chromosomes","Each pole will end up with double the number of chromosomes","Chromosome number has no relationship to the original cell"],
+     correct:0, exp:"Since chromosomes were duplicated (as sister chromatids) before division and then split evenly, each pole ends up with the same chromosome number as the original cell had."},
+    {tier:3, q:"Explain why 'chromatin' and 'chromosome' refer to the same DNA at different times, rather than two completely different molecules.",
+     opts:["Chromatin is the DNA's uncoiled form during Interphase, and it coils up into chromosomes for cell division \u2014 it's the same DNA in a different physical state","Chromatin and chromosomes are unrelated molecules found in different organelles","Chromosomes are made only during cancer, while chromatin is only found in healthy cells","Chromatin is found only in plant cells, while chromosomes are found only in animal cells"],
+     correct:0, exp:"Chromatin and chromosomes are the same DNA at different points in the cell cycle \u2014 loosely coiled (chromatin) during Interphase, tightly coiled (chromosomes) for division."},
+    {tier:3, q:"Based on the levels of biological organization, why would damage to a single cell not necessarily affect an entire organ system?",
+     opts:["Because tissues and organs are made up of many cells working together, so the loss or malfunction of one cell doesn't necessarily disrupt the whole structure","Because organs are not made of cells at all","Because organ systems function completely independently of cells","Because a single cell is more complex than an entire organ"],
+     correct:0, exp:"Since tissues, organs, and organ systems are built from many cells working together, damage to a single cell doesn't automatically disrupt the larger structure."},
+    {tier:3, q:"Why might a cell that has already become cancerous still sometimes respond well to chemotherapy?",
+     opts:["Because chemotherapy targets any actively dividing cell, and cancerous cells typically divide much more frequently than normal cells","Because chemotherapy specifically repairs damaged DNA","Because cancerous cells stop dividing once treatment starts","Because chemotherapy only works on benign tumors, not cancerous ones"],
+     correct:0, exp:"Cancerous cells tend to divide more frequently than normal cells, and chemotherapy targets actively dividing cells \u2014 making cancerous cells especially vulnerable."},
+    {tier:3, q:"Since mutations in DNA are what can start the process leading to cancer, why do factors like UV radiation and tobacco increase cancer risk?",
+     opts:["Because they can damage or mutate a cell's DNA, potentially affecting genes that control the cell cycle","Because they directly cause tumors to form without affecting DNA at all","Because they only affect chromatin, never chromosomes","Because they only affect cells that are already cancerous"],
+     correct:0, exp:"UV radiation, tobacco, and similar factors can damage DNA; if that damage affects a gene controlling the cell cycle, it can set off the chain of events leading to cancer."},
+    {tier:3, q:"Why would skipping sunscreen and reducing physical activity both realistically raise a person's cancer risk, even though they seem like very different behaviors?",
+     opts:["Because one increases UV-related DNA damage while the other is linked to lifestyle factors that also raise risk, so both work against the body's cancer-prevention practices","Because sunscreen and exercise are the exact same protective mechanism","Because only sunscreen affects cancer risk, not exercise","Because neither actually affects cancer risk at all"],
+     correct:0, exp:"UV exposure and unhealthy lifestyle habits are both known risk factors \u2014 skipping protective practices like sunscreen and exercise removes two different lines of defense."},
+    {tier:3, q:"A cell has 8 chromosomes before it enters mitosis. Predict how many chromosomes each of the two resulting daughter cells will have.",
+     opts:["8, the same as the original cell","4, half of the original cell","16, double the original cell","It depends entirely on which phase was skipped"],
+     correct:0, exp:"Chromosomes are duplicated into sister chromatid pairs before division, then split evenly \u2014 so each daughter cell ends up with the same chromosome count as the original."},
+
+    // ---------------- TIER 2: DIAGRAM-BASED (phase ID & structure labeling) ----------------
+    {tier:2, img:"interphase", q:"Look at the diagram below. Which phase of the cell cycle is shown?",
+     opts:["Interphase","Prophase","Telophase","Metaphase"],
+     correct:0, exp:"The nuclear envelope is still intact and the DNA is loose, uncoiled chromatin instead of condensed X-shaped chromosomes &mdash; that's Interphase."},
+    {tier:2, img:"prophase", q:"Look at the diagram below. Which phase of the cell cycle is shown?",
+     opts:["Prophase","Interphase","Anaphase","Telophase"],
+     correct:0, exp:"The nuclear envelope has broken down and the chromosomes have condensed into visible X shapes, but they haven't lined up yet &mdash; that's Prophase."},
+    {tier:2, img:"metaphase", q:"Look at the diagram below. Which phase of the cell cycle is shown?",
+     opts:["Metaphase","Prophase","Anaphase","Telophase"],
+     correct:0, exp:"The chromosomes are lined up at the cell's equator with spindle fibers attached from both poles &mdash; the hallmark of Metaphase."},
+    {tier:2, img:"anaphase", q:"Look at the diagram below. Which phase of the cell cycle is shown?",
+     opts:["Anaphase","Metaphase","Telophase","Interphase"],
+     correct:0, exp:"The sister chromatids have split apart and are moving toward opposite poles &mdash; that's Anaphase."},
+    {tier:2, img:"telophase", q:"Look at the diagram below. Which phase of the cell cycle is shown?",
+     opts:["Telophase","Anaphase","Metaphase","Prophase"],
+     correct:0, exp:"Two nuclear envelopes are re-forming around the separating chromosomes and the cell is starting to pinch into two &mdash; that's Telophase."},
+    {tier:2, img:"labeledMetaphase", q:"In the diagram below, which letter points to the spindle fibers?",
+     opts:["A","B","C","D"],
+     correct:2, exp:"Letter C points to a spindle fiber &mdash; one of the thread-like structures that pull chromosomes to opposite poles."},
+    {tier:2, img:"labeledMetaphase", q:"In the diagram below, which letter points to a centriole?",
+     opts:["A","B","C","D"],
+     correct:1, exp:"Letter B points to a centriole &mdash; the structure at each pole that anchors the spindle fibers."},
+  ];
+
+  // ---------------------------------------------------------------
+  // DIAGRAMS
+  // Small hand-built SVG illustrations of each phase, used by the
+  // diagram-based questions above. Kept as plain shapes (no gradients/
+  // defs) so they're safe to drop into multiple places if ever needed.
+  // ---------------------------------------------------------------
+  function chromosomeX(cx, cy, color, size){
+    size = size || 9;
+    return '<line x1="'+(cx-size)+'" y1="'+(cy-size)+'" x2="'+(cx+size)+'" y2="'+(cy+size)+'" stroke="'+color+'" stroke-width="4" stroke-linecap="round"/>'
+         + '<line x1="'+(cx-size)+'" y1="'+(cy+size)+'" x2="'+(cx+size)+'" y2="'+(cy-size)+'" stroke="'+color+'" stroke-width="4" stroke-linecap="round"/>';
+  }
+  function chromatid(cx, cy, color, size, pointLeft){
+    size = size || 9;
+    const apex = pointLeft ? [cx-size, cy] : [cx+size, cy];
+    const legX = pointLeft ? cx+size*0.6 : cx-size*0.6;
+    return '<path d="M '+legX+' '+(cy-size)+' L '+apex[0]+' '+apex[1]+' L '+legX+' '+(cy+size)+'" fill="none" stroke="'+color+'" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>';
+  }
+  function centriolePair(cx, cy){
+    return '<circle cx="'+(cx-4)+'" cy="'+cy+'" r="3" fill="#1B2B22"/><circle cx="'+(cx+4)+'" cy="'+cy+'" r="3" fill="#1B2B22"/>';
+  }
+  function spindleLine(x1,y1,x2,y2){
+    return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="#C9A26B" stroke-width="1.5"/>';
+  }
+  function chromatinBlob(cx, cy, color){
+    return '<path d="M '+(cx-6)+' '+cy+' Q '+cx+' '+(cy-6)+' '+(cx+6)+' '+cy+' Q '+cx+' '+(cy+6)+' '+(cx-6)+' '+cy+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linecap="round"/>';
+  }
+  // Fills a circular area with lots of short, softly-angled strokes to read
+  // as a fuzzy, thread-like mass (loose chromatin) rather than a few
+  // isolated blobs. Uses a golden-angle spread so it fills evenly without
+  // needing true randomness.
+  function chromatinFuzz(cx, cy, radius, colorA, colorB){
+    let s = '<circle cx="'+cx+'" cy="'+cy+'" r="'+radius+'" fill="'+colorA+'" opacity="0.08"/>';
+    const count = 70;
+    for(let i=0;i<count;i++){
+      const angle = (i * 137.508) * Math.PI/180;
+      const distFactor = 0.1 + ((i*53)%100)/100 * 0.8;
+      const px = cx + Math.cos(angle)*radius*distFactor;
+      const py = cy + Math.sin(angle)*radius*distFactor;
+      const strokeAngle = angle + Math.PI/2 + (((i%7)-3)*0.2);
+      const len = 3.5 + (i%4);
+      const x1 = px - Math.cos(strokeAngle)*len/2;
+      const y1 = py - Math.sin(strokeAngle)*len/2;
+      const x2 = px + Math.cos(strokeAngle)*len/2;
+      const y2 = py + Math.sin(strokeAngle)*len/2;
+      const color = i%2===0 ? colorA : colorB;
+      s += '<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="'+color+'" stroke-width="1.6" stroke-linecap="round" opacity="0.8"/>';
+    }
+    return s;
+  }
+  function calloutLine(x1,y1,x2,y2){
+    return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="#4A5A4F" stroke-width="1.2"/>'
+         + '<circle cx="'+x2+'" cy="'+y2+'" r="2.5" fill="#4A5A4F"/>';
+  }
+  function calloutLabel(x,y,letter){
+    return '<circle cx="'+x+'" cy="'+y+'" r="10" fill="#EEF1E6" stroke="#1B2B22" stroke-width="1.5"/>'
+         + '<text x="'+x+'" y="'+(y+4)+'" text-anchor="middle" font-size="12" font-weight="700" font-family="Georgia,serif" fill="#1B2B22">'+letter+'</text>';
+  }
+
+  function diagramInterphase(){
+    let s = '<svg viewBox="0 0 300 200" role="img" aria-label="Diagram of a cell showing an intact nuclear envelope with a fuzzy mass of loose chromatin filling it">';
+    s += '<ellipse cx="150" cy="100" rx="95" ry="60" fill="none" stroke="#1B2B22" stroke-width="3"/>';
+    s += '<circle cx="150" cy="100" r="42" fill="none" stroke="#3E7C59" stroke-width="2" stroke-dasharray="4 3"/>';
+    s += chromatinFuzz(150, 100, 35, '#7A431E', '#4F7B3C');
+    s += centriolePair(95,150);
+    return s + '</svg>';
+  }
+
+  function diagramProphase(){
+    let s = '<svg viewBox="0 0 300 200" role="img" aria-label="Diagram of a cell with a fragmenting nuclear envelope shown as a dotted circle around the condensed chromosomes">';
+    s += '<ellipse cx="150" cy="100" rx="95" ry="60" fill="none" stroke="#1B2B22" stroke-width="3"/>';
+    s += '<circle cx="147" cy="100" r="44" fill="none" stroke="#3E7C59" stroke-width="2" stroke-dasharray="1.5 5" stroke-linecap="round"/>';
+    [[125,75],[175,80],[120,120],[170,125]].forEach((c,i)=>{
+      s += chromosomeX(c[0], c[1], i%2===0 ? '#7A431E' : '#4F7B3C');
+    });
+    s += spindleLine(60,100, 105,78);
+    s += spindleLine(60,100, 105,122);
+    s += spindleLine(240,100, 195,80);
+    s += spindleLine(240,100, 195,125);
+    s += centriolePair(60,100);
+    s += centriolePair(240,100);
+    return s + '</svg>';
+  }
+
+  function diagramMetaphase(){
+    let s = '<svg viewBox="0 0 300 200" role="img" aria-label="Diagram of a cell with chromosomes lined up at the equator and spindle fibers from both poles">';
+    s += '<ellipse cx="150" cy="100" rx="95" ry="60" fill="none" stroke="#1B2B22" stroke-width="3"/>';
+    s += '<line x1="150" y1="40" x2="150" y2="160" stroke="#8B5E34" stroke-width="1.5" stroke-dasharray="5 4"/>';
+    [55,80,120,145].forEach((y,i)=>{
+      s += spindleLine(55,100, 150,y);
+      s += spindleLine(245,100, 150,y);
+      s += chromosomeX(150, y, i%2===0 ? '#7A431E' : '#4F7B3C');
+    });
+    s += centriolePair(55,100);
+    s += centriolePair(245,100);
+    return s + '</svg>';
+  }
+
+  function diagramAnaphase(){
+    let s = '<svg viewBox="0 0 300 200" role="img" aria-label="Diagram of a cell with sister chromatids separated and moving toward opposite poles">';
+    s += '<ellipse cx="150" cy="100" rx="95" ry="60" fill="none" stroke="#1B2B22" stroke-width="3"/>';
+    [55,80,120,145].forEach((y,i)=>{
+      const color = i%2===0 ? '#7A431E' : '#4F7B3C';
+      s += spindleLine(55,100, 100,y);
+      s += spindleLine(245,100, 200,y);
+      s += chromatid(100, y, color, 9, true);
+      s += chromatid(200, y, color, 9, false);
+    });
+    s += centriolePair(55,100);
+    s += centriolePair(245,100);
+    return s + '</svg>';
+  }
+
+  function diagramTelophase(){
+    let s = '<svg viewBox="0 0 300 200" role="img" aria-label="Diagram of a cell pinching into two, each with a new nuclear envelope re-forming">';
+    s += '<ellipse cx="95" cy="100" rx="70" ry="58" fill="none" stroke="#1B2B22" stroke-width="3"/>';
+    s += '<ellipse cx="205" cy="100" rx="70" ry="58" fill="none" stroke="#1B2B22" stroke-width="3"/>';
+    s += '<path d="M150,45 Q135,100 150,155" fill="none" stroke="#1B2B22" stroke-width="2" stroke-dasharray="4 3"/>';
+    s += '<circle cx="95" cy="100" r="32" fill="none" stroke="#3E7C59" stroke-width="2" stroke-dasharray="4 3"/>';
+    s += '<circle cx="205" cy="100" r="32" fill="none" stroke="#3E7C59" stroke-width="2" stroke-dasharray="4 3"/>';
+    [[85,90],[105,90],[95,115]].forEach((b,i)=> s += chromatinBlob(b[0], b[1], i%2===0 ? '#7A431E' : '#4F7B3C'));
+    [[195,90],[215,90],[205,115]].forEach((b,i)=> s += chromatinBlob(b[0], b[1], i%2===0 ? '#7A431E' : '#4F7B3C'));
+    s += centriolePair(25,100);
+    s += centriolePair(275,100);
+    return s + '</svg>';
+  }
+
+  function diagramLabeledMetaphase(){
+    let s = '<svg viewBox="0 0 300 220" role="img" aria-label="Labeled diagram of a cell in Metaphase with structures A, B, C, and D marked">';
+    s += '<ellipse cx="150" cy="110" rx="95" ry="60" fill="none" stroke="#1B2B22" stroke-width="3"/>';
+    [70,95,125,150].forEach((y,i)=>{
+      s += spindleLine(55,110, 150,y);
+      s += spindleLine(245,110, 150,y);
+      s += chromosomeX(150, y, i%2===0 ? '#7A431E' : '#4F7B3C');
+    });
+    s += centriolePair(55,110);
+    s += centriolePair(245,110);
+
+    s += calloutLine(150,29, 150,50);
+    s += calloutLabel(150,18,'A');
+    s += calloutLine(26,110, 55,110);
+    s += calloutLabel(15,110,'B');
+    const midX = (55+150)/2, midY = (110+95)/2;
+    s += calloutLine(25,183, midX, midY);
+    s += calloutLabel(15,193,'C');
+    s += calloutLine(280,155, 150,125);
+    s += calloutLabel(290,155,'D');
+
+    return s + '</svg>';
+  }
+
+  const DIAGRAMS = {
+    interphase: diagramInterphase,
+    prophase: diagramProphase,
+    metaphase: diagramMetaphase,
+    anaphase: diagramAnaphase,
+    telophase: diagramTelophase,
+    labeledMetaphase: diagramLabeledMetaphase,
+  };
+
+  // ---------------------------------------------------------------
+  // STATE
+  // ---------------------------------------------------------------
+  const TOTAL_QUESTIONS = 40; // every student answers this many, regardless of performance
+
+  const pools = {1:[], 2:[], 3:[]};
+  function rebuildPools(){
+    [1,2,3].forEach(t=>{
+      pools[t] = BANK.map((q,i)=>({...q, idx:i})).filter(q=>q.tier===t);
+      shuffle(pools[t]);
+    });
+  }
+  function shuffle(arr){
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]] = [arr[j],arr[i]];
+    }
+    return arr;
+  }
+
+  let tier = 2;
+  let consecCorrect = 0;
+  let asked = 0, correctCount = 0;
+  let bestStreak = 0, curStreak = 0;
+  let highestTier = 2;
+  let currentQ = null;
+  let currentShuffledOpts = null;
+  let answered = false;
+
+  const el = id => document.getElementById(id);
+
+  function showScreen(name){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    el('screen-'+name).classList.add('active');
+  }
+
+  // Draws a question from a single tier. If that tier's own pool has been
+  // used up, it's reshuffled and reused (repeats within the same
+  // difficulty level) rather than borrowing from another tier -- so a
+  // student who's struggling keeps seeing easier questions on the same
+  // content instead of being pushed into harder, unseen material.
+  function drawFromTier(t){
+    if(pools[t].length === 0){
+      pools[t] = BANK.map((q,i)=>({...q, idx:i})).filter(q=>q.tier===t);
+      shuffle(pools[t]);
+    }
+    return pools[t].pop();
+  }
+
+  function updateStreakDots(){
+    const dots = document.querySelectorAll('#streak-dots .dot');
+    dots.forEach((d,i)=> d.classList.toggle('hit', i < consecCorrect));
+  }
+
+  function nextQuestion(){
+    answered = false;
+
+    currentQ = drawFromTier(tier);
+    currentShuffledOpts = currentQ.opts.map((text,i)=>({text, isCorrect:i===currentQ.correct}));
+    shuffle(currentShuffledOpts);
+
+    el('q-count').textContent = asked + 1;
+    el('q-total').textContent = TOTAL_QUESTIONS;
+    el('q-text').textContent = currentQ.q;
+    updateStreakDots();
+
+    const imgWrap = el('q-image');
+    if(currentQ.img && DIAGRAMS[currentQ.img]){
+      imgWrap.innerHTML = DIAGRAMS[currentQ.img]();
+      imgWrap.classList.add('show');
+    } else {
+      imgWrap.innerHTML = '';
+      imgWrap.classList.remove('show');
+    }
+
+    const optsWrap = el('options');
+    optsWrap.innerHTML = '';
+    currentShuffledOpts.forEach(o=>{
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.textContent = o.text;
+      b.addEventListener('click', ()=>selectOption(b, o));
+      optsWrap.appendChild(b);
+    });
+
+    el('feedback').classList.remove('show','right','miss');
+    el('btn-next').classList.remove('show');
+  }
+
+  function selectOption(btn, chosen){
+    if(answered) return;
+    answered = true;
+    asked++;
+
+    const allBtns = document.querySelectorAll('#options .opt');
+    allBtns.forEach(b=>{
+      b.disabled = true;
+      if(b !== btn) b.classList.add('dim');
+    });
+
+    const fb = el('feedback');
+    const verdict = el('fb-verdict');
+    const text = el('fb-text');
+
+    if(chosen.isCorrect){
+      correctCount++;
+      curStreak++;
+      bestStreak = Math.max(bestStreak, curStreak);
+      consecCorrect++;
+      btn.classList.add('correct');
+      fb.classList.add('show','right');
+      verdict.textContent = "Correct.";
+      text.innerHTML = currentQ.exp;
+
+      if(consecCorrect >= 2 && tier < 3){
+        tier++;
+        highestTier = Math.max(highestTier, tier);
+        consecCorrect = 0;
+      }
+    } else {
+      curStreak = 0;
+      consecCorrect = 0;
+      btn.classList.add('wrong');
+      allBtns.forEach(b=>{
+        if(b.textContent === currentShuffledOpts.find(o=>o.isCorrect).text){
+          b.classList.add('correct');
+          b.classList.remove('dim');
+        }
+      });
+      fb.classList.add('show','miss');
+      verdict.textContent = "Not quite.";
+      text.innerHTML = currentQ.exp;
+
+      if(tier > 1){
+        tier--;
+      }
+    }
+
+    updateStreakDots();
+    const nextBtn = el('btn-next');
+    nextBtn.textContent = (asked >= TOTAL_QUESTIONS) ? "See results" : "Next question \u2192";
+    nextBtn.classList.add('show');
+  }
+
+  function finishSession(){
+    const pct = asked > 0 ? Math.round((correctCount/asked)*100) : 0;
+    el('summary-who').textContent = buildWhoLine();
+    el('stat-asked').textContent = asked;
+    el('stat-pct').textContent = pct + "%";
+    el('stat-best-streak').textContent = bestStreak;
+
+    let msg;
+    if(asked === 0){
+      msg = "No questions answered yet \u2014 head back in and give it a try.";
+    } else if(highestTier === 3 && pct >= 70){
+      msg = "Strong work \u2014 you handled the tougher reasoning questions and held on well. That's real command of the cell cycle and cancer content.";
+    } else if(highestTier >= 2 && pct >= 50){
+      msg = "Solid progress. You're comfortable with the phase identification and building toward the trickier reasoning questions. A little more practice on the ones you missed will help.";
+    } else {
+      msg = "This is exactly what practice is for \u2014 you worked through the core vocabulary. Revisit the explanations above, then try another round.";
+    }
+    el('summary-message').textContent = msg;
+    showScreen('summary');
+  }
+
+  function buildWhoLine(){
+    const name = el('stu-name').value.trim();
+    const hour = el('stu-hour').value.trim();
+    if(name && hour) return name + " \u00b7 Hour " + hour;
+    if(name) return name;
+    if(hour) return "Hour " + hour;
+    return "Review session";
+  }
+
+  // ---------------------------------------------------------------
+  // Read aloud
+  // ---------------------------------------------------------------
+  function speakCurrentQuestion(){
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    let toSay = currentQ.q;
+    if(currentQ.img) toSay += " Look at the diagram on screen to answer.";
+    const utter = new SpeechSynthesisUtterance(toSay);
+    utter.rate = 0.95;
+    window.speechSynthesis.speak(utter);
+  }
+
+  // ---------------------------------------------------------------
+  // Wire up
+  // ---------------------------------------------------------------
+  el('btn-start').addEventListener('click', ()=>{
+    rebuildPools();
+    tier = 2; consecCorrect = 0; asked = 0; correctCount = 0;
+    bestStreak = 0; curStreak = 0; highestTier = 2;
+    showScreen('quiz');
+    nextQuestion();
+  });
+
+  el('btn-next').addEventListener('click', ()=>{
+    if(asked >= TOTAL_QUESTIONS){
+      finishSession();
+    } else {
+      nextQuestion();
+    }
+  });
+  el('btn-restart').addEventListener('click', ()=> showScreen('start'));
+  el('btn-speak').addEventListener('click', speakCurrentQuestion);
+
+})();
+</script>
+</body>
+</html>
